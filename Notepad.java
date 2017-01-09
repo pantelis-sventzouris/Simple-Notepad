@@ -144,12 +144,14 @@ public class Notepad extends JFrame
 		setVisible(true);
 	}
 	
+	//tests the app
 	public static void main(String[] argv)
 	{
 		new Notepad();
 		
 	}
 	
+	//action listener implementation for exit button
 	private class Exit implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
@@ -159,6 +161,7 @@ public class Notepad extends JFrame
 
 	}
 	
+	//action listener implementation for about button
 	private class About implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event)
