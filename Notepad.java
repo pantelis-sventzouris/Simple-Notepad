@@ -33,6 +33,8 @@ public class Notepad extends JFrame
 	
 	private JMenu helpMenu;
 	private JMenuItem aboutButton;
+	
+	private String content;
 		
 	public Notepad()
 	{
@@ -114,6 +116,7 @@ public class Notepad extends JFrame
 					{
 						textArea.append(text.nextLine()+"\n");
 					}
+					content = textArea.getText();
 				}
 				catch(Exception ex)
 				{
@@ -143,7 +146,12 @@ public class Notepad extends JFrame
 		
 		//exit listener. if not saved, asks for saving first
 		exitButton.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent event){
-			if(textArea.getText().isEmpty())
+			if(content==null)
+			{
+				content = "";
+			}
+			//checks if there were changes in the document. omits the whitespaces when creating a new document.
+			if((textArea.getText().isEmpty())||(textArea.getText().compareTo(content)==0)||(textArea.getText().trim().length()==0))
 			{
 				System.exit(0);
 			}
