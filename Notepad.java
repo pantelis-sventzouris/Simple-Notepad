@@ -72,7 +72,6 @@ public class Notepad extends JFrame
 		exitButton.setMnemonic(KeyEvent.VK_X);
 		exitButton.setBackground(Color.ORANGE);
 		exitButton.setFont(defaultFont);
-		exitButton.addActionListener(new Exit());
 		fileMenu.add(exitButton);
 		
 		//create the Help Menu
@@ -101,6 +100,7 @@ public class Notepad extends JFrame
 		add(textArea);
 		
 		//exclusive listeners for buttons
+		//open-file listener
 		openButton.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent event){
 			JFileChooser open = new JFileChooser();
 			int option = open.showOpenDialog(open);
@@ -122,6 +122,7 @@ public class Notepad extends JFrame
 			}
 		}});
 		
+		//save-file listener
 		saveButton.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent event){
 			JFileChooser save = new JFileChooser();
 			int option = save.showSaveDialog(save);
@@ -140,25 +141,35 @@ public class Notepad extends JFrame
 			}
 		}});
 		
+		//exit listener. if not saved, asks for saving first
+		exitButton.addActionListener(new ActionListener(){public void actionPerformed(ActionEvent event){
+			if(textArea.getText().isEmpty())
+			{
+				System.exit(0);
+			}
+			else
+			{
+				JFileChooser save = new JFileChooser();
+				int option = save.showSaveDialog(save);
+				if(option==JFileChooser.APPROVE_OPTION)
+				{
+					try
+					{
+						BufferedWriter data = new BufferedWriter(new FileWriter(save.getSelectedFile().getPath()));
+						data.write(textArea.getText());
+						data.close();
+						System.exit(0);
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+		}});
+		
 		setSize(600,600);
 		setVisible(true);
-	}
-	
-	//tests the app
-	public static void main(String[] argv)
-	{
-		new Notepad();
-		
-	}
-	
-	//action listener implementation for exit button
-	private class Exit implements ActionListener
-	{
-		public void actionPerformed(ActionEvent e)
-		{
-			System.exit(0);
-		}
-
 	}
 	
 	//action listener implementation for about button
@@ -172,4 +183,11 @@ public class Notepad extends JFrame
 			JOptionPane.showMessageDialog(null,message,title,JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
+	
+	//tests the app
+	public static void main(String[] argv)
+	{
+		new Notepad();
+		
+	}	
 }
